@@ -12,7 +12,7 @@ print("*************************BESTBUY_WEB_SCRAPER*************************\n")
 price = []
 brand = []
 model = []
-color_material = []
+#color_material = []
 
 session = HTMLSession()
 
@@ -39,7 +39,7 @@ for page in webpages:
 
         brand.append(split_str[0])
         model.append(split_str[1])
-        color_material.append(split_str[-1])
+        #color_material.append(split_str[-1])
 
     sleep(randint(2, 5))
 
