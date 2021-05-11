@@ -27,8 +27,7 @@ for page in webpages:
     r = session.get(
         "https://www.bestbuy.com/site/refrigerators/french-door-refrigerators/abcat0901004.c?" + "cp=" + str(page))
     item_desc = r.html.find("h4 a[href]")
-    item_price = r.html.find(
-        "div.priceView-hero-price.priceView-customer-price")
+    item_price = r.html.find("div.priceView-hero-price.priceView-customer-price")
 
     for item in item_price:
         clean_string = re.sub("[Y].+", '', item.text)
