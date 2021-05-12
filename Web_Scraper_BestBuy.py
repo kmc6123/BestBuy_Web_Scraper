@@ -41,10 +41,11 @@ for page in webpages:
 
     sleep(randint(2, 5))
 
-print("\nDONE: CSV file is in your downloads folder")
-
 dictionary = {"brand": brand, "description": model, "price": price}
 df = pd.DataFrame(dictionary)
 
 username = getpass.getuser()
-df.to_csv("/Users/" + username + "/Downloads/BestBuy_WebScrape.csv",index=False, encoding='utf-8-sig')
+input_filename = input("\nEnter name for the file (no extention required): ") 
+df.to_csv("/Users/" + username + "/Downloads/" + input_filename + ".csv",index=False, encoding='utf-8-sig')
+
+print("DONE: CSV file is in your downloads folder")
