@@ -16,8 +16,7 @@ model = []
 
 session = HTMLSession()
 
-input_pagenum = int(
-    input("Enter number of pages to scrape (default is 1): ") or "1")
+input_pagenum = int(input("Enter number of pages to scrape (default is 1): ") or "1")
 
 print("\nLoading...")
 
