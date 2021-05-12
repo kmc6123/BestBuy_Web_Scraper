@@ -23,8 +23,7 @@ print("\nLoading...")
 webpages = range(1, input_pagenum + 1)
 
 for page in webpages:
-    r = session.get(
-        "https://www.bestbuy.com/site/refrigerators/french-door-refrigerators/abcat0901004.c?" + "cp=" + str(page))
+    r = session.get("https://www.bestbuy.com/site/refrigerators/french-door-refrigerators/abcat0901004.c?" + "cp=" + str(page))
     item_desc = r.html.find("h4 a[href]")
     item_price = r.html.find("div.priceView-hero-price.priceView-customer-price")
 
@@ -48,5 +47,4 @@ dictionary = {"brand": brand, "description": model, "price": price}
 df = pd.DataFrame(dictionary)
 
 username = getpass.getuser()
-df.to_csv("/Users/" + username + "/Downloads/BestBuy_WebScrape.csv",
-          index=False, encoding='utf-8-sig')
+df.to_csv("/Users/" + username + "/Downloads/BestBuy_WebScrape.csv",index=False, encoding='utf-8-sig')
