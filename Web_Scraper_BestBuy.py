@@ -39,7 +39,7 @@ for page in webpages:
         model.append(split_str[1])
         #color_material.append(split_str[-1])
 
-    sleep(randint(2, 5))
+    sleep(randint(2, 8))
 
 dictionary = {"brand": brand, "description": model, "price": price}
 df = pd.DataFrame(dictionary)
