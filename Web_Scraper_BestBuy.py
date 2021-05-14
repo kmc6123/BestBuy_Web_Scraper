@@ -41,8 +41,7 @@ for page in webpages:
     items = r.html.find("#main-results > ol > li.sku-item")
 
     for item in items:
-        item_price = item.find(
-            "div.priceView-hero-price.priceView-customer-price", first=True)
+        item_price = item.find("div.priceView-hero-price.priceView-customer-price", first=True)
         if item_price != None:
             clean_string = re.sub("[Y].+", '', item_price.text)
             price.append(clean_string)
