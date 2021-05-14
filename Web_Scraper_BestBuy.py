@@ -60,7 +60,7 @@ for page in webpages:
         else:
             color_material.append("n/a") 
 
-    sleep(randint(2, 5))
+    sleep(randint(2, 7))
 
 dictionary = {"brand": brand, "description": model, "color_material": color_material, "price": price}
 df = pd.DataFrame(dictionary)
