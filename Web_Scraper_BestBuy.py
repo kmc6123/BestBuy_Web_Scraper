@@ -10,13 +10,12 @@ print("*************************BESTBUY_WEB_SCRAPER*************************\n")
 
 def getBaseUrl():
     url = "https://www.bestbuy.com/site/refrigerators/french-door-refrigerators/abcat0901004.c"
-    
     return url
 
 price = []
 brand = []
 model = []
-#color_material = []
+color_material = []
 
 session = HTMLSession()
 
@@ -29,7 +28,6 @@ def inputPageNum():
     while (response > max_pagenum):
         print("\nERROR: Number of pages entered exceeds the number of pages available " + "(" + str(max_pagenum) + ")")
         response = inputPageNum()
-        
     return response
 
 input_pagenum = inputPageNum()
@@ -52,15 +50,19 @@ for page in webpages:
     for item in items:
         # Split returned string
         item_desc = item.find("h4 a[href]", first=True)
-        split_str = item_desc.text.split(" -", 1)
+        split_str = item_desc.text.split(" -", 2)
 
         brand.append(split_str[0])
         model.append(split_str[1])
-        # color_material.append(split_str[-1])
+
+        if (len(split_str) > 2):
+            color_material.append(split_str[-1])
+        else:
+            color_material.append("n/a") 
 
     sleep(randint(2, 5))
 
-dictionary = {"brand": brand, "description": model, "price": price}
+dictionary = {"brand": brand, "description": model, "color_material": color_material, "price": price}
 df = pd.DataFrame(dictionary)
 
 username = getpass.getuser()
