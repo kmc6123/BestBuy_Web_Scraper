@@ -10,6 +10,7 @@ print("*************************BESTBUY_WEB_SCRAPER*************************\n")
 
 def getBaseUrl():
     url = "https://www.bestbuy.com/site/refrigerators/french-door-refrigerators/abcat0901004.c"
+    
     return url
 
 price = []
@@ -26,9 +27,9 @@ def inputPageNum():
         input("Enter number of pages to scrape (default is 1): ") or "1")
 
     while (response > max_pagenum):
-        print("\nERROR: Number of pages entered exceeds the number of pages available " +
-              "(" + str(max_pagenum) + ")")
+        print("\nERROR: Number of pages entered exceeds the number of pages available " + "(" + str(max_pagenum) + ")")
         response = inputPageNum()
+        
     return response
 
 input_pagenum = inputPageNum()
