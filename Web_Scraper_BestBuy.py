@@ -1,72 +1,117 @@
 from requests_html import HTMLSession
-import re
 import pandas as pd
-import getpass
+import re
 
 from time import sleep
 from random import randint
 
-print("*************************BESTBUY_WEB_SCRAPER*************************\n")
+import getpass
+import os
+import sqlalchemy as sq
 
-def getBaseUrl():
-    url = "https://www.bestbuy.com/site/refrigerators/french-door-refrigerators/abcat0901004.c"
-    return url
 
-price = []
-brand = []
-model = []
-color_material = []
-
-session = HTMLSession()
-
-max_pagenum = int(session.get(getBaseUrl()).html.find("ol.paging-list > li:nth-last-child(1)", first=True).text)
-
-def inputPageNum():
-    response = int(
-        input("Enter number of pages to scrape (default is 1): ") or "1")
+def inputPageNum(max_pagenum):
+    response = int(input("Enter number of pages to scrape (default is 1): ") or "1")
 
     while (response > max_pagenum):
         print("\nERROR: Number of pages entered exceeds the number of pages available " + "(" + str(max_pagenum) + ")")
         response = inputPageNum()
     return response
 
-input_pagenum = inputPageNum()
-webpages = range(1, input_pagenum + 1)
 
-print("\nLoading...")
+def scrapeData(webpages, session, baseUrl):
 
-for page in webpages:
-    r = session.get(getBaseUrl() + "?cp=" + str(page))
-    items = r.html.find("#main-results > ol > li.sku-item")
+    for page in webpages:
+        r = session.get(baseUrl + "?cp=" + str(page))
+        items = r.html.find("#main-results > ol > li.sku-item")
 
-    for item in items:
-        item_price = item.find("div.priceView-hero-price.priceView-customer-price", first=True)
-        if item_price != None:
-            clean_string = re.sub("[Y].+", '', item_price.text)
-            price.append(clean_string)
-        else:
-            price.append("n/a")
+        for item in items:
+            item_price = item.find("div.priceView-hero-price.priceView-customer-price", first=True)
+            if item_price != None:
+                clean_string = re.sub("\$|\,|(Y.+)", '', item_price.text)
+                price.append(float(clean_string))
+            else:
+                price.append(None)
 
-    for item in items:
-        # Split returned string
-        item_desc = item.find("h4 a[href]", first=True)
-        split_str = item_desc.text.split(" -", 2)
+        for item in items:
+            item_desc = item.find("h4 a[href]", first=True)
+            split_str = item_desc.text.split(" -", 2)
 
-        brand.append(split_str[0])
-        model.append(split_str[1])
+            brand.append(split_str[0])
+            model.append(split_str[1])
 
-        if (len(split_str) > 2):
-            color_material.append(split_str[-1])
-        else:
-            color_material.append("n/a") 
+            if (len(split_str) > 2):
+                color_material.append(split_str[-1])
+            else:
+                color_material.append(None)
 
-    sleep(randint(2, 7))
+        sleep(randint(2, 6))
 
-dictionary = {"brand": brand, "description": model, "color_material": color_material, "price": price}
-df = pd.DataFrame(dictionary)
+        
+def toCSV(df):
+    username = getpass.getuser()
+    input_filename = input("\nEnter name for the file (no extention required): ")
 
-username = getpass.getuser()
-input_filename = input("\nEnter name for the file (no extention required): ")
-df.to_csv("/Users/" + username + "/Downloads/" + input_filename + ".csv", index=False, encoding='utf-8-sig')
+    df.to_csv("/Users/" + username + "/Downloads/" + input_filename + ".csv", index=False, encoding='utf-8-sig')
 
-print("DONE: CSV file is in your downloads folder")
+    
+def toMySQL(df):
+    mysql_username = os.environ.get("DB_USER")
+    mysql_password = os.environ.get("DB_PASS")
+
+    db_name = "BB"
+    con = sq.create_engine("mysql+pymysql://" + mysql_username + ":" + mysql_password + "@localhost/" + db_name)
+
+    df.to_sql("BB_Table", con, index=False, if_exists="replace")
+
+    
+def selectExportOption(df):
+    optionMenu = "\nExport Options:\n1.) To CSV File\n2.) To MySQL Database\n\nPlease type option number and hit enter to select: "
+    finished = False
+    while not finished:
+        selection = input(optionMenu) or "0"
+
+        if selection == "1":
+            toCSV(df)
+            print("DONE: CSV file is in your downloads folder")
+            break
+
+        elif selection == "2":
+            toMySQL(df)
+            print("DONE: Data was sent to MySQL database and stored")
+            break
+
+        elif selection != ("1" or "2"):
+            print("ERROR: Invalid selection please type either 1 or 2 to complete")
+
+            
+def main():
+    print("*************************BESTBUY_WEB_SCRAPER*************************\n")
+
+    session = HTMLSession()
+
+    baseUrl = "https://www.bestbuy.com/site/refrigerators/french-door-refrigerators/abcat0901004.c"
+
+    max_pagenum = int(session.get(baseUrl).html.find("ol.paging-list > li:nth-last-child(1)", first=True).text)
+    
+    input_pagenum = inputPageNum(max_pagenum)
+    
+    webpages = range(1, input_pagenum + 1)
+
+    print("\nLoading...")
+
+    scrapeData(webpages, session, baseUrl)
+
+    df = pd.DataFrame(data_dict)
+
+    selectExportOption(df)
+
+    
+price = []
+brand = []
+model = []
+color_material = []
+
+data_dict = {"brand": brand, "description": model, "color_material": color_material, "price": price}
+
+main()
