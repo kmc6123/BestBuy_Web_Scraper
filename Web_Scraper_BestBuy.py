@@ -36,7 +36,7 @@ def inputPageNum(max_pagenum):
 
     while (response > max_pagenum):
         print("\nERROR: Number of pages entered exceeds the number of pages available " + "(" + str(max_pagenum) + ")")
-        response = inputPageNum()
+        response = inputPageNum(max_pagenum)
     return response
 
 
