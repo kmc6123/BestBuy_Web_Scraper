@@ -19,7 +19,6 @@ except ModuleNotFoundError:
     print("Module 'sqlalchemy' is not installed and may impact the functionality of this program")
     installed = False
 
-
 import re
 
 from time import sleep
@@ -28,6 +27,17 @@ from random import randint
 import getpass
 import platform
 import os
+
+
+
+price = [] 
+brand = []
+model = []
+color_material = []
+
+data_dict = {"brand": brand, "description": model, "color_material": color_material, "price": price}
+
+
 
 def inputPageNum(max_pagenum):
     response = input("Enter number of pages to scrape (default is 1): ") or 1
@@ -68,6 +78,7 @@ def scrapeData(webpages, session, baseUrl):
 
         sleep(randint(2, 6))
 
+        
 def previewDataOption(df): 
     response = input("\nWould you like to preview the dataframe? (y/n): ").lower() or "n"  
 
@@ -148,12 +159,5 @@ def main():
 
     selectExportOption(df)
 
-
-price = [] 
-brand = []
-model = []
-color_material = []
-
-data_dict = {"brand": brand, "description": model, "color_material": color_material, "price": price}
-
+    
 main()
