@@ -1,6 +1,6 @@
 try:
-    from requests_html import HTMLSession   
-except ModuleNotFoundError:  
+    from requests_html import HTMLSession
+except ModuleNotFoundError:
     print("Module 'requests-html' is not installed and is required for use of this program")
     print("\nQuitting program")
     quit()
@@ -29,15 +29,14 @@ import getpass
 import platform
 import os
 
-
 def inputPageNum(max_pagenum):
-    response = int(
-        input("Enter number of pages to scrape (default is 1): ") or "1")
+    response = input("Enter number of pages to scrape (default is 1): ") or 1
 
-    while (response > max_pagenum):
+    while (int(response) > max_pagenum):
         print("\nERROR: Number of pages entered exceeds the number of pages available " + "(" + str(max_pagenum) + ")")
         response = inputPageNum(max_pagenum)
-    return response
+
+    return int(response)
 
 
 def scrapeData(webpages, session, baseUrl):
@@ -69,6 +68,11 @@ def scrapeData(webpages, session, baseUrl):
 
         sleep(randint(2, 6))
 
+def previewDataOption(df): 
+    response = input("\nWould you like to preview the dataframe? (y/n): ").lower() or "n"  
+
+    if response == "y":
+        print(df.head(n=10))  
 
 def toCSV(df):
     username = getpass.getuser()
@@ -96,12 +100,15 @@ def toMySQL(df):
 
 
 def selectExportOption(df):
-    optionMenu = "\nExport Options:\n1.) To CSV File\n2.) To MySQL Database\n\nPlease type option number and hit enter to select: "
+    optionMenu = '\nExport Options:\n1.) To CSV File\n2.) To MySQL Database\n\nPlease type option number (or "q" to quit program) and hit enter: '
     finished = False
     while not finished:
         selection = input(optionMenu) or "0"
+        
+        if selection.lower() == "q":
+            quit() 
 
-        if selection == "1":
+        elif selection == "1":
             toCSV(df)
             print("DONE: CSV file is in your downloads folder")
             break
@@ -112,10 +119,11 @@ def selectExportOption(df):
             break
 
         elif selection == "2" and not installed:
-            print("ERROR: Module 'sqlalchemy' is not installed only option CSV is available")
+            print(
+                "ERROR: Module 'sqlalchemy' is not installed only option CSV is available")
 
         elif selection != ("1" or "2"):
-            print("ERROR: Invalid selection please type either 1 or 2 to complete")
+            print('ERROR: Invalid selection please type either "1" or "2" to complete (or "q" to quit program)')
 
 
 def main():
@@ -123,12 +131,11 @@ def main():
 
     session = HTMLSession()
 
-    baseUrl = "https://www.bestbuy.com/site/refrigerators/french-door-refrigerators/abcat0901004.c"
+    baseUrl = "https://www.bestbuy.com/site/searchpage.jsp?_dyncharset=UTF-8&id=pcat17071&iht=y&keys=keys&ks=960&list=n&qp=microwavetypesv_facet%3DMicrowave%20Type~Countertop&sc=Global&st=microwave&type=page&usc=All%20Categories"
 
     max_pagenum = int(session.get(baseUrl).html.find("ol.paging-list > li:nth-last-child(1)", first=True).text)
 
     input_pagenum = inputPageNum(max_pagenum)
-    
     webpages = range(1, input_pagenum + 1)
 
     print("\nLoading...")
@@ -137,10 +144,12 @@ def main():
 
     df = pd.DataFrame(data_dict)
 
+    previewDataOption(df)
+
     selectExportOption(df)
 
 
-price = []
+price = [] 
 brand = []
 model = []
 color_material = []
