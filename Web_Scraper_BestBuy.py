@@ -56,8 +56,7 @@ def scrapeData(webpages, session, baseUrl):
         items = r.html.find("#main-results > ol > li.sku-item")
 
         for item in items:
-            item_price = item.find(
-                "div.priceView-hero-price.priceView-customer-price", first=True)
+            item_price = item.find("div.priceView-hero-price.priceView-customer-price", first=True)
             if item_price != None:
                 clean_string = re.sub("\$|\,|(Y.+)", '', item_price.text)
                 price.append(float(clean_string))
@@ -87,17 +86,14 @@ def previewDataOption(df):
 
 def toCSV(df):
     username = getpass.getuser()
-    input_filename = input(
-        "\nEnter name for the file (no extention required): ") or "BestBuy_Web_Scrape"
+    input_filename = input("\nEnter name for the file (no extention required): ") or "BestBuy_Web_Scrape"
 
     plt = platform.system()
     if (plt == "Windows"):
-        df.to_csv("C:/Users/" + username + "/Downloads/" +
-                  input_filename + ".csv", index=False, encoding='utf-8-sig')
+        df.to_csv("C:/Users/" + username + "/Downloads/" + input_filename + ".csv", index=False, encoding='utf-8-sig')
 
     if (plt == "Darwin"):
-        df.to_csv("/Users/" + username + "/Downloads/" +
-                  input_filename + ".csv", index=False, encoding='utf-8-sig')
+        df.to_csv("/Users/" + username + "/Downloads/" + input_filename + ".csv", index=False, encoding='utf-8-sig')
 
 
 def toMySQL(df):
@@ -130,8 +126,7 @@ def selectExportOption(df):
             break
 
         elif selection == "2" and not installed:
-            print(
-                "ERROR: Module 'sqlalchemy' is not installed only option CSV is available")
+            print("ERROR: Module 'sqlalchemy' is not installed only option CSV is available")
 
         elif selection != ("1" or "2"):
             print('ERROR: Invalid selection please type either "1" or "2" to complete (or "q" to quit program)')
