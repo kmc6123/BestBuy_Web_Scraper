@@ -30,6 +30,8 @@ import os
 
 
 
+baseUrl = "https://www.bestbuy.com/site/searchpage.jsp?_dyncharset=UTF-8&id=pcat17071&iht=y&keys=keys&ks=960&list=n&qp=microwavetypesv_facet%3DMicrowave%20Type~Countertop&sc=Global&st=microwave&type=page&usc=All%20Categories"
+
 price = [] 
 brand = []
 model = []
@@ -136,8 +138,6 @@ def main():
     print("*************************BESTBUY_WEB_SCRAPER*************************\n")
 
     session = HTMLSession()
-
-    baseUrl = "https://www.bestbuy.com/site/searchpage.jsp?_dyncharset=UTF-8&id=pcat17071&iht=y&keys=keys&ks=960&list=n&qp=microwavetypesv_facet%3DMicrowave%20Type~Countertop&sc=Global&st=microwave&type=page&usc=All%20Categories"
 
     max_pagenum = int(session.get(baseUrl).html.find("ol.paging-list > li:nth-last-child(1)", first=True).text)
 
