@@ -29,7 +29,6 @@ import platform
 import os
 
 
-
 baseUrl = "https://www.bestbuy.com/site/searchpage.jsp?_dyncharset=UTF-8&id=pcat17071&iht=y&keys=keys&ks=960&list=n&qp=microwavetypesv_facet%3DMicrowave%20Type~Countertop&sc=Global&st=microwave&type=page&usc=All%20Categories"
 
 price = [] 
@@ -38,7 +37,6 @@ model = []
 color_material = []
 
 data_dict = {"brand": brand, "description": model, "color_material": color_material, "price": price}
-
 
 
 def inputPageNum(max_pagenum):
