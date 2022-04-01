@@ -132,7 +132,7 @@ def selectExportOption(df):
             print('ERROR: Invalid selection please type either "1" or "2" to complete (or "q" to quit program)')
 
 
-def main():
+if __name__ == '__main__':
     print("*************************BESTBUY_WEB_SCRAPER*************************\n")
 
     session = HTMLSession()
@@ -147,10 +147,6 @@ def main():
     scrapeData(webpages, session, baseUrl)
 
     df = pd.DataFrame(data_dict)
-
-    previewDataOption(df)
-
-    selectExportOption(df)
-
     
-main()
+    previewDataOption(df)
+    selectExportOption(df)
