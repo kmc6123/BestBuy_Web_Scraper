@@ -130,9 +130,9 @@ def selectExportOption(df):
 
         elif selection != ("1" or "2"):
             print('ERROR: Invalid selection please type either "1" or "2" to complete (or "q" to quit program)')
-
-
-if __name__ == '__main__':
+            
+            
+def main():
     print("*************************BESTBUY_WEB_SCRAPER*************************\n")
 
     session = HTMLSession()
@@ -150,3 +150,7 @@ if __name__ == '__main__':
     
     previewDataOption(df)
     selectExportOption(df)
+
+
+if __name__ == '__main__':
+    main()
