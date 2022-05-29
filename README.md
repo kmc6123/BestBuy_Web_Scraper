@@ -1,4 +1,4 @@
-# BestBuy_Web_Scraper
+# BestBuy Web Scraper
 Purpose: I created this script/app as a personal portfolio project to keep my programming skills sharp and to learn new skills by challenging current abilities.
 
 Simple python based web scraper to extract product information and prices off the Best Buy website and send the resulting data into a easy to work with csv file or send the data to a local MySql database.
