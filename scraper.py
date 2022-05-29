@@ -83,6 +83,7 @@ def previewDataOption(df):
     if response == "y":
         print(df.head(n=10))  
 
+        
 def toCSV(df):
     username = getpass.getuser()
     input_filename = input("\nEnter name for the file (no extention required): ") or "BestBuy_Web_Scrape"
