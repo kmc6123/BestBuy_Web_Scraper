@@ -50,7 +50,6 @@ def inputPageNum(max_pagenum):
 
 
 def scrapeData(webpages, session, baseUrl):
-
     for page in webpages:
         r = session.get(baseUrl + "?cp=" + str(page))
         items = r.html.find("#main-results > ol > li.sku-item")
